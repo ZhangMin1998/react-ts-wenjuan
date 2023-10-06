@@ -1,9 +1,10 @@
 import React, { FC } from 'react'
-// import styles from './Edit.module.scss'
+import { useParams } from 'react-router-dom'
 
 const Edit:FC = () => {
+  const { id } = useParams()
   return (
-    <p>Edit</p>
+    <p>Edit {id}</p>
   )
 }
 
