@@ -1,8 +1,10 @@
 import React, { FC } from 'react'
 import styles from './Card.module.scss'
 import { useNavigate, Link } from 'react-router-dom'
-import { Button, Space, Divider, Tag } from 'antd'
-import { EditOutlined, LineChartOutlined, DeleteOutlined, CopyOutlined, StarOutlined } from '@ant-design/icons'
+import { Button, Space, Divider, Tag, Popconfirm, Modal, message } from 'antd'
+import { EditOutlined, LineChartOutlined, DeleteOutlined, CopyOutlined, StarOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
+
+const { confirm } = Modal
 
 type PropsType = {
   _id: string,
@@ -16,6 +18,15 @@ type PropsType = {
 const Card: FC<PropsType> = (props: PropsType) => {
   const { _id, title, createdAt, answerCount, isPublished, isStar } = props
   const navigate = useNavigate()
+
+  const duplicate = () => {
+    confirm({
+      title: '你确定复制该问卷吗?',
+      icon: <ExclamationCircleOutlined />,
+      onOk: () => message.success('复制成功')
+    })
+  }
+
   return (
    <div className={styles.container}>
     <div className={styles.title}>
@@ -48,12 +59,19 @@ const Card: FC<PropsType> = (props: PropsType) => {
           <Button icon={<StarOutlined />} type='text' size='small'>
             {isStar ? '取消标星' : '标星'}
           </Button>
-          <Button icon={<CopyOutlined />} type='text' size='small'>
+          <Button icon={<CopyOutlined />} type='text' size='small' onClick={duplicate}>
             复制
           </Button>
-          <Button icon={<DeleteOutlined />} type='text' size='small'>
-            删除
-          </Button>
+          <Popconfirm
+            title="提示"
+            description="你确定删除该问卷?"
+            okText="确定"
+            cancelText="取消"
+          >
+            <Button icon={<DeleteOutlined />} type='text' size='small'>
+              删除
+            </Button>
+          </Popconfirm>
         </Space>
       </div>
     </div>
