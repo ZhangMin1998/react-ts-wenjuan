@@ -18,7 +18,7 @@ const NotFound:FC = () => {
         <div className={styles.bullshit}>
           <div className={classnames(styles['bullshit__oops'])}>404 !</div>
           <div className={classnames(styles['bullshit__headline'])}>很抱歉，您访问的页面不存在...</div>
-          <div className={styles['bullshit__info']}>请检查您输入的URL是否正确，或者单击下面的按钮返回。</div>
+          <div className={styles['bullshit__info']}>请检查您输入的URL是否正确，或者单击下面的按钮返回上一页。</div>
           <div className={styles['bullshit__return-home']} onClick={() => navigate(-1)}>返回</div>
         </div>
       </div>
