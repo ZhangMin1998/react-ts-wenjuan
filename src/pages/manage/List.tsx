@@ -2,6 +2,9 @@ import React, { FC, useState } from 'react'
 import styles from './common.module.scss'
 import Card from '../../components/Card/Card'
 // import { useSearchParams } from 'react-router-dom'
+import { Typography } from 'antd'
+
+const { Title } = Typography
 
 const List: FC = () => {
   // const [searchParams] = useSearchParams()
@@ -18,7 +21,7 @@ const List: FC = () => {
    <>
     <div className={styles.header}>
       <div className={styles.left}>
-        <h3>我的问卷</h3>
+        <Title level={3}>我的问卷</Title>
       </div>
       <div className={styles.right}>
         <h4>（搜索）</h4>

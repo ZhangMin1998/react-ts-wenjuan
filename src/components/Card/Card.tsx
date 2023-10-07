@@ -43,6 +43,8 @@ const Card: FC<PropsType> = (props: PropsType) => {
           {isPublished ? <Tag color="processing">已发布</Tag> : <Tag>未发布</Tag>}
           <span>答卷: {answerCount}</span>
           <span>{createdAt}</span>
+          {/* <h3>答卷: {answerCount}</h3>
+          <h3>{createdAt}</h3> */}
         </Space>
       </div>
     </div>
