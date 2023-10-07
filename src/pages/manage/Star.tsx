@@ -29,9 +29,9 @@ const Star:FC = () => {
 
       <div className={styles.content}>
         {/* 问卷列表 */}
-        {/* {list.length === 0 && <Empty description='暂无数据' />} */}
+        {list.length === 0 && <Empty description='暂无数据' />}
         {
-          list.length && list.map(item => {
+          list.length > 0 && list.map(item => {
             const { _id } = item
             return <Card key={_id} {...item} />
           })
