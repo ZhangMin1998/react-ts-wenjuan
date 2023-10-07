@@ -15,7 +15,7 @@ const ManageLayout:FC = () => {
       <div className={styles.container}>
         <div className={styles.left}>
           <Space direction='vertical'>
-            <Button type="primary" size='large' icon={<PlusOutlined />}>创建问卷</Button>
+            <Button type="primary" size='large' icon={<PlusOutlined />} style={{marginTop: '24px'}}>创建问卷</Button>
             <Divider style={{borderTop: 'transparent'}} />
 
             <Button
