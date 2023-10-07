@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styles from './Card.module.scss'
 import { useNavigate, Link } from 'react-router-dom'
-import { Button, Space, Divider } from 'antd'
+import { Button, Space, Divider, Tag } from 'antd'
 import { EditOutlined, LineChartOutlined, DeleteOutlined, CopyOutlined, StarOutlined } from '@ant-design/icons'
 
 type PropsType = {
@@ -28,14 +28,14 @@ const Card: FC<PropsType> = (props: PropsType) => {
         </Link>
       </div>
       <div className={styles.right}>
-        {isPublished ? <span style={{color: 'green'}}>已发布</span> : <span>未发布</span>}
-        &nbsp;
-        <span>答卷: {answerCount}</span>
-        &nbsp;
-        <span>{createdAt}</span>
+        <Space>
+          {isPublished ? <Tag color="processing">已发布</Tag> : <Tag>未发布</Tag>}
+          <span>答卷: {answerCount}</span>
+          <span>{createdAt}</span>
+        </Space>
       </div>
     </div>
-    <Divider />
+    <Divider style={{margin: '12px 0'}}/>
     <div className={styles['button-container']}>
       <div className={styles.left}>
         <Space>
