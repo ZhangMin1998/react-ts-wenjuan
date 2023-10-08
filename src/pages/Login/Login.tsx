@@ -33,7 +33,7 @@ const Login: FC = () => {
     remember?: string;
   }
   const onFinish = (values: any) => {
-    console.log('Success:', values)
+    // console.log('Success:', values)
     const { username, password, remember } = values || {}
     if (remember) {
       rememberUser(username, password)
@@ -69,17 +69,24 @@ const Login: FC = () => {
           <Form.Item<FieldType>
             label="用户名"
             name="username"
-            rules={[{ required: true, message: '请输入用户名!' }]}
+            rules={[
+              { required: true, message: '请输入用户名!' },
+              { type: 'string', min:4, max: 8,  message: '字符长度在4-8之间' },
+              { pattern: /^\w+$/, message: '只能是字母数字下划线' }
+            ]}
           >
-            <Input autoComplete="on"/>
+            <Input autoComplete="on" allowClear/>
           </Form.Item>
 
           <Form.Item<FieldType>
             label="密码"
             name="password"
-            rules={[{ required: true, message: '请输入密码!' }]}
+            rules={[
+              { required: true, message: '请输入密码!' },
+              { min:4, max: 8,  message: '字符长度在4-8之间' }
+            ]}
           >
-            <Input.Password autoComplete="on"/>
+            <Input.Password autoComplete="on" allowClear/>
           </Form.Item>
           <Form.Item<FieldType>
             name="remember"

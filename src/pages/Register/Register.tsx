@@ -42,7 +42,11 @@ const Register:FC = () => {
           <Form.Item<FieldType>
             label="用户名"
             name="username"
-            rules={[{ required: true, message: '请输入用户名!' }]}
+            rules={[
+              { required: true, message: '请输入用户名!' },
+              { type: 'string', min:4, max: 8,  message: '字符长度在4-8之间' },
+              { pattern: /^\w+$/, message: '只能是字母数字下划线' }
+            ]}
           >
             <Input />
           </Form.Item>
@@ -50,14 +54,29 @@ const Register:FC = () => {
           <Form.Item<FieldType>
             label="密码"
             name="password"
-            rules={[{ required: true, message: '请输入密码!' }]}
+            rules={[
+              { required: true, message: '请输入密码!' },
+              { min:4, max: 8,  message: '字符长度在4-8之间' }
+            ]}
           >
             <Input.Password />
           </Form.Item>
           <Form.Item<FieldType>
             label="确认密码"
             name="confirm"
-            rules={[{ required: true, message: '请输入密码!' }]}
+            dependencies={['password']} // 依赖于password
+            rules={[
+              { required: true, message: '请确认密码!' },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve()
+                  } else {
+                    return Promise.reject(new Error('两次密码不一致!'))
+                  }
+                }
+              })
+            ]}
           >
             <Input.Password />
           </Form.Item>
