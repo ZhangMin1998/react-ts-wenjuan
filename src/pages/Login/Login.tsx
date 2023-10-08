@@ -21,16 +21,15 @@ const getUseStorage = () => {
   }
 }
 
-const Login:FC = () => {
+const Login: FC = () => {
   useEffect(() => {
     const { username, password } = getUseStorage()
-    form.setFieldValue(username, password)
+    form.setFieldsValue({ username, password })  // setFieldsValue  !!!!!
   }, [])
 
   type FieldType = {
     username?: string;
     password?: string;
-    confirm?: string;
     remember?: string;
   }
   const onFinish = (values: any) => {
@@ -72,7 +71,7 @@ const Login:FC = () => {
             name="username"
             rules={[{ required: true, message: '请输入用户名!' }]}
           >
-            <Input />
+            <Input autoComplete="on"/>
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -80,7 +79,7 @@ const Login:FC = () => {
             name="password"
             rules={[{ required: true, message: '请输入密码!' }]}
           >
-            <Input.Password />
+            <Input.Password autoComplete="on"/>
           </Form.Item>
           <Form.Item<FieldType>
             name="remember"
