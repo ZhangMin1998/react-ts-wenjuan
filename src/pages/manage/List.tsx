@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react'
 import styles from './common.module.scss'
-import Card from '../../components/Card/Card'
-// import { useSearchParams } from 'react-router-dom'
 import { Typography } from 'antd'
+import Card from '../../components/Card/Card'
+import ListSearch from '../../components/ListSearch/ListSearch'
+// import { useSearchParams } from 'react-router-dom'
 
 const { Title } = Typography
 
@@ -24,7 +25,7 @@ const List: FC = () => {
         <Title level={3}>我的问卷</Title>
       </div>
       <div className={styles.right}>
-        <h4>（搜索）</h4>
+        <ListSearch />
       </div>
     </div>
 

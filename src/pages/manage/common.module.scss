@@ -1,7 +1,12 @@
 .header{
   display: flex;
+  justify-content: center;
+  align-items: center;
   .left{
     flex: 1;
+    h3{
+      margin-bottom: none;
+    }
   }
   .right{
     flex: 1;
