@@ -33,7 +33,7 @@ const Register:FC = () => {
           name="basic"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
+          style={{ minWidth: 400 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -61,13 +61,13 @@ const Register:FC = () => {
           >
             <Input.Password />
           </Form.Item>
-          <Form.Item<FieldType>
+          {/* <Form.Item<FieldType>
             name="remember"
             valuePropName="checked"
             wrapperCol={{ offset: 8, span: 16 }}
           >
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
+            <Checkbox>记住密码</Checkbox>
+          </Form.Item> */}
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Space>
