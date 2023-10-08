@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react'
 import styles from './common.module.scss'
-import Card from '../../components/Card/Card'
-import { useTitle } from 'ahooks'
 import { Typography, Empty } from 'antd'
+import { useTitle } from 'ahooks'
+import Card from '../../components/Card/Card'
+import ListSearch from '../../components/ListSearch/ListSearch'
 
 const { Title } = Typography
 
@@ -23,7 +24,7 @@ const Star:FC = () => {
           <Title level={3}>星标问卷</Title>
         </div>
         <div className={styles.right}>
-          <h4>（搜索）</h4>
+          <ListSearch />
         </div>
       </div>
 

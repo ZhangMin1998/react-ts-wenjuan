@@ -3,6 +3,7 @@ import styles from './common.module.scss'
 import { Typography, Empty, Table, Tag, Button, Space, Modal, message } from 'antd'
 import { useTitle } from 'ahooks'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
+import ListSearch from '../../components/ListSearch/ListSearch'
 
 const { Title } = Typography
 const { confirm } = Modal
@@ -80,7 +81,8 @@ const Trash:FC = () => {
           <Title level={3}>回收站</Title>
         </div>
         <div className={styles.right}>
-          <h4>（搜索）{JSON.stringify(selectedIds)}</h4>
+          <ListSearch />
+          {/* <h4>（搜索）{JSON.stringify(selectedIds)}</h4> */}
         </div>
       </div>
 
