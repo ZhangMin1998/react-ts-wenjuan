@@ -1,12 +1,25 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import styles from './Home.module.scss'
-import { Button, Typography } from 'antd';
+import { Button, Typography } from 'antd'
+
+// import '../../_mock/index'
+// import axios from 'axios'
 
 const { Title, Paragraph } = Typography;
 
 const Home: FC = () => {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    // 1、mock.js只能劫持XMLHttpRequest， 不能劫持fetch， 局限性
+    // fetch('/api/test')
+    // .then(res => res.json())
+    // .then(data => console.log('fetch data', data))
+
+    // 2、axios内部使用的XMLHttpRequest
+    // axios.get('/api/test').then(res => console.log('axios data', res.data))
+  }, [])
 
   return (
     <div className={styles.container}>
