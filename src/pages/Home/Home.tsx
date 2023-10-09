@@ -4,7 +4,7 @@ import styles from './Home.module.scss'
 import { Button, Typography } from 'antd'
 
 // import '../../_mock/index'
-// import axios from 'axios'
+import axios from 'axios'
 
 const { Title, Paragraph } = Typography;
 
@@ -19,6 +19,13 @@ const Home: FC = () => {
 
     // 2、axios内部使用的XMLHttpRequest
     // axios.get('/api/test').then(res => console.log('axios data', res.data))
+
+    // nodejs+mock
+    // http://localhost:3002/api/test  跨域 create-react-app 创建的项目 webpack打包 devServer代理 解决跨域
+    // fetch('/api/test')
+    // .then(res => res.json())
+    // .then(data => console.log('fetch data', data)) // ok 可以用
+    axios.get('/api/test').then(res => console.log('axios data', res.data))
   }, [])
 
   return (
