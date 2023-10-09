@@ -2,15 +2,19 @@ import axios from 'axios'
 import { message } from 'antd'
 
 const instance = axios.create({
-  timeout: 10* 1000 // request timeout
+  timeout: 10 * 1000 // request timeout
 })
 
-instance.interceptors.request.use(
+// 响应拦截器 ！！！
+instance.interceptors.response.use(
   res => {
+    // console.log(res, res.data)
+    
     const resData = (res.data || {}) as ResType
     const { errno, data, msg } = resData
 
     if (errno !== 0) {
+      // 错误提示
       if (msg) message.error(msg)
     }
 
