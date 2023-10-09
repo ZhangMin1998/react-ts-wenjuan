@@ -1,22 +1,12 @@
-import React, { FC, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { getQuestionService } from '../../../services/request'
+import React, { FC } from 'react'
+// import { useParams } from 'react-router-dom'
+import useLoadQuestionData from '../../../hooks/useLoadQuestionData' 
 
 const Edit:FC = () => {
-  const { id = '' } = useParams()
-  const [loading, setLoading] = useState(true)
-  const [questionData, setQuestionData] = useState({})
+  // const { id = '' } = useParams()
 
-  useEffect(() => {         // 异步函数无法直接在useEffect使用
-    async function fn() {
-      const data = await getQuestionService(id)
-      console.log('data', data)
-      setQuestionData(data)
-      setLoading(false)
-    }
-    fn()
-  }, [id])
-
+  const { loading, questionData } = useLoadQuestionData()
+  
   return <div>
     <p>编辑页</p>
     { loading ? <p>loading</p> : <p>{JSON.stringify(questionData)}</p> }
