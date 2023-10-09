@@ -56,7 +56,7 @@ const Trash:FC = () => {
     <div style={{marginBottom: '16px'}}>
       <Space>
         <Button type='primary' disabled={!selectedIds.length}>恢复</Button>
-        <Button danger disabled={!selectedIds.length} onClick={deleteAll}>删除</Button>
+        <Button danger disabled={!selectedIds.length} onClick={deleteAll}>彻底删除</Button>
       </Space>
     </div>
     <Table
