@@ -4,7 +4,7 @@ Mock.mock('/api/test', 'get', () => {
   return {
     errno: 0,
     data: {
-      name: `zhangmin - ${Date.now()}`
+      name: `${Mock.Random.cname()} - ${Date.now()} `
     }
   }
 })
