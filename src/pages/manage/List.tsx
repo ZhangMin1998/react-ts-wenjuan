@@ -6,11 +6,13 @@ import ListSearch from '../../components/ListSearch/ListSearch'
 // import { useSearchParams } from 'react-router-dom'
 // import { getQuestionListService } from '../../services/request'
 // import { useRequest } from 'ahooks'
+import { useTitle } from 'ahooks'
 import useLoadQuestionDataList from '../../hooks/useLoadQuestionListData'
 
 const { Title } = Typography
 
 const List: FC = () => {
+  useTitle('妞妞问卷 - 我的问卷')
   // const [searchParams] = useSearchParams()
   // console.log('aaa', searchParams.get('aaa'))
   

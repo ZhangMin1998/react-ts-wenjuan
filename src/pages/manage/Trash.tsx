@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react'
 import styles from './common.module.scss'
-import { Typography, Empty, Table, Tag, Button, Space, Modal, message } from 'antd'
+import { Typography, Empty, Table, Tag, Button, Space, Modal, message, Spin } from 'antd'
 import { useTitle } from 'ahooks'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../components/ListSearch/ListSearch'
+import useLoadQuestionDataList from '../../hooks/useLoadQuestionListData'
 
 const { Title } = Typography
 const { confirm } = Modal
@@ -11,12 +12,18 @@ const { confirm } = Modal
 const Trash:FC = () => {
   useTitle('妞妞问卷 - 回收站')
 
-  const [list, setList] = useState([
-    { _id: 'q1', title: '问题1', isPublished: true, isStar: true, answerCount: 5, createdAt: '3月10日 13:24' },
-    { _id: 'q2', title: '问题2', isPublished: true, isStar: true, answerCount: 5, createdAt: '3月10日 13:24' },
-    { _id: 'q3', title: '问题3', isPublished: true, isStar: true, answerCount: 5, createdAt: '3月10日 13:24' },
-    { _id: 'q4', title: '问题4', isPublished: true, isStar: true, answerCount: 5, createdAt: '3月10日 13:24' }
-  ])
+  // const [list, setList] = useState([
+  //   { _id: 'q1', title: '问题1', isPublished: true, isStar: true, answerCount: 5, createdAt: '3月10日 13:24' },
+  //   { _id: 'q2', title: '问题2', isPublished: true, isStar: true, answerCount: 5, createdAt: '3月10日 13:24' },
+  //   { _id: 'q3', title: '问题3', isPublished: true, isStar: true, answerCount: 5, createdAt: '3月10日 13:24' },
+  //   { _id: 'q4', title: '问题4', isPublished: true, isStar: true, answerCount: 5, createdAt: '3月10日 13:24' }
+  // ])
+
+  const { data = {}, loading } = useLoadQuestionDataList({
+    // isStar: false,
+    isDeleted: true
+  })
+  const { list = [], total = 0 } = data
 
   const tableColumns = [
     {
@@ -87,10 +94,15 @@ const Trash:FC = () => {
       </div>
 
       <div className={styles.content}>
+        {loading && (
+          <div style={{textAlign: 'center'}}>
+            <Spin size="large" />
+          </div>
+        )}
         {/* 问卷列表 */}
-        {list.length === 0 && <Empty description='暂无数据' />}
+        { (!loading && list.length === 0) && <Empty description='暂无数据' />}
         {
-          list.length > 0 && (TableElem)
+          (!loading && list.length > 0) && (TableElem)
         }
       </div>
     </>
