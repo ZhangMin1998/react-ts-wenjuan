@@ -5,11 +5,11 @@ import useLoadQuestionData from '../../../hooks/useLoadQuestionData'
 const Edit:FC = () => {
   // const { id = '' } = useParams()
 
-  const { loading, questionData } = useLoadQuestionData()
+  const { data, loading } = useLoadQuestionData()
   
   return <div>
     <p>编辑页</p>
-    { loading ? <p>loading</p> : <p>{JSON.stringify(questionData)}</p> }
+    { loading ? <p>loading</p> : <p>{JSON.stringify(data)}</p> }
   </div>
 }
 

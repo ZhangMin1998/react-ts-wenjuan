@@ -1,27 +1,40 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import styles from './ManageLayout.module.scss'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Button, Space, Divider, message } from 'antd'
 import { BarsOutlined, DeleteOutlined, PlusOutlined, StarOutlined } from '@ant-design/icons'
 import { createQuestionService } from '../services/request'
+import { useRequest } from 'ahooks'
 
 const ManageLayout:FC = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   // console.log('pathname', pathname)
 
-  const [loading, setLoading] = useState(false)
-  async function handleCreateClick() {
-    setLoading(true)
+  // const [loading, setLoading] = useState(false)
+  // async function handleCreateClick() {
+  //   setLoading(true)
+  //   const data = await createQuestionService()
+  //   console.log('data', data)
+  //   const { id } = data || {}
+  //   if (id) {
+  //     navigate(`/question/edit/${id}`)
+  //     message.success('创建成功')
+  //     setLoading(false)
+  //   }
+  // }
+  async function load() {
     const data = await createQuestionService()
-    console.log('data', data)
-    const { id } = data || {}
-    if (id) {
-      navigate(`/question/edit/${id}`)
-      message.success('创建成功')
-      setLoading(false)
-    }
+    return data
   }
+  const { loading, run } = useRequest(load, { // 如果设置了 options.manual = true，则 useRequest 不会默认执行，需要通过 run 来触发执行
+    manual: true,
+    onSuccess: (result, params) => {
+      // console.log(result)
+      navigate(`/question/edit/${result.id}`)
+      message.success('创建成功')
+    }
+  })
   
 
   return (
@@ -29,7 +42,8 @@ const ManageLayout:FC = () => {
       <div className={styles.container}>
         <div className={styles.left}>
           <Space direction='vertical'>
-            <Button type="primary" size='large' icon={<PlusOutlined />} style={{marginTop: '24px'}} onClick={handleCreateClick} disabled={loading}>创建问卷</Button>
+            {/* handleCreateClick =>  */}
+            <Button type="primary" size='large' icon={<PlusOutlined />} style={{marginTop: '24px'}} onClick={run} disabled={loading}>创建问卷</Button>
             <Divider style={{borderTop: 'transparent'}} />
 
             <Button
