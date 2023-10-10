@@ -18,7 +18,7 @@ const ListSearch: FC = () => {
     setValue(event.target.value)
   }
   const handleSearch = (value: string) => {
-    console.log('value:', value)
+    // console.log('value:', value)
     navigate({
       pathname,
       search: `keyword=${value}`

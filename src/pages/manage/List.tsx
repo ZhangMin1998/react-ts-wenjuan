@@ -4,8 +4,9 @@ import { Typography, Spin  } from 'antd'
 import Card from '../../components/Card/Card'
 import ListSearch from '../../components/ListSearch/ListSearch'
 // import { useSearchParams } from 'react-router-dom'
-import { getQuestionListService } from '../../services/request'
-import { useRequest } from 'ahooks'
+// import { getQuestionListService } from '../../services/request'
+// import { useRequest } from 'ahooks'
+import useLoadQuestionDataList from '../../hooks/useLoadQuestionListData'
 
 const { Title } = Typography
 
@@ -33,7 +34,8 @@ const List: FC = () => {
   // }, [])
 
   // 使用useRequest替换上面的
-  const { data = {}, loading } = useRequest(getQuestionListService)
+  // const { data = {}, loading } = useRequest(getQuestionListService) // 被下面代替
+  const { data = {}, loading } = useLoadQuestionDataList()
   const { list = [], total = 0 } = data
 
   return (
