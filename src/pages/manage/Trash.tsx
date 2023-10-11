@@ -5,6 +5,7 @@ import { useTitle } from 'ahooks'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../components/ListSearch/ListSearch'
 import useLoadQuestionDataList from '../../hooks/useLoadQuestionListData'
+import ListPage from '../../components/ListPage/ListPage'
 
 const { Title } = Typography
 const { confirm } = Modal
@@ -104,6 +105,10 @@ const Trash:FC = () => {
         {
           (!loading && list.length > 0) && (TableElem)
         }
+      </div>
+
+      <div className={styles.footer}>
+        <ListPage total={total} />
       </div>
     </>
   )

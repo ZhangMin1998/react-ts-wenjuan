@@ -5,6 +5,7 @@ import { useTitle } from 'ahooks'
 import Card from '../../components/Card/Card'
 import ListSearch from '../../components/ListSearch/ListSearch'
 import useLoadQuestionDataList from '../../hooks/useLoadQuestionListData'
+import ListPage from '../../components/ListPage/ListPage'
 
 const { Title } = Typography
 
@@ -51,7 +52,9 @@ const Star:FC = () => {
         }
       </div>
 
-      <div className={styles.footer}>分页</div>
+      <div className={styles.footer}>
+        <ListPage total={total} />
+      </div>
     </>
   )
 }
