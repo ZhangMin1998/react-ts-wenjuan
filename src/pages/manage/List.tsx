@@ -4,9 +4,9 @@ import { Typography, Spin  } from 'antd'
 import Card from '../../components/Card/Card'
 import ListSearch from '../../components/ListSearch/ListSearch'
 import { useSearchParams } from 'react-router-dom'
-// import { getQuestionListService } from '../../services/request'
+import { getQuestionListService } from '../../services/request'
 // import { useRequest } from 'ahooks'
-import { useTitle, useDebounceFn } from 'ahooks'
+import { useTitle, useDebounceFn, useRequest } from 'ahooks'
 // import useLoadQuestionDataList from '../../hooks/useLoadQuestionListData'
 
 const { Title } = Typography
@@ -44,7 +44,6 @@ const List: FC = () => {
   const [pageNum, setPageNum] = useState(1) // List内部的数据 不在url参数中体现
   const [list, setList] = useState([]) // 全部的列表数据，上拉加载更多 累计
   const [total, setTotal] = useState(0) // 数据库总数
-  // const [loading, setLoading] = useState(false)
   const haveMoreData = total > list.length
 
   const [searchParams] = useSearchParams() // url里面有keyword
@@ -53,7 +52,7 @@ const List: FC = () => {
   // const tryLoadMore = () => {
   //   console.log('loadMore...')
   // }
-  // 触发加载 防抖
+  // 尝试触发加载 防抖
   const containerRef = useRef<HTMLDivElement>(null)
   const { run: tryLoadMore } = useDebounceFn(
     () => {
@@ -66,26 +65,45 @@ const List: FC = () => {
       
       if (bottom <= window.innerHeight) { // div底部距离页面顶部的距离小于视口的高度 说明全部露出来了
         console.log('执行加载')
+        load() //  真正加载数据
       }
     },
     {
       wait: 1000,
     },
   )
+  // 真正加载
+  const {run:load, loading} = useRequest(async () => {
+    const data = await getQuestionListService({
+      pageNum,
+      pageSize: 10,
+      keyword: searchParams.get('keyword') || ''
+    })
+    return data
+  },{
+    manual: true,
+    onSuccess: (result, params) => {
+      console.log(result)
+      const { list: newList = [], total = 0 } = result
+      setList(list.concat(newList)) // 累加
+      setTotal(total)
+      setPageNum(pageNum + 1)
+    }
+  })
+
   // 1.当页面加载、或者url的keyword改变时，触发加载
   useEffect(() => {
     tryLoadMore() // 加载第一页 初始化
   },[searchParams])
   // 2.页面滚动时，触发加载
   useEffect(() => {
-    // if (haveMoreData) {
-    //   window.addEventListener('scroll', tryLoadMore)
-    // }
-    window.addEventListener('scroll', tryLoadMore)
+    if (haveMoreData) {
+      window.addEventListener('scroll', tryLoadMore)
+    }
     return () => {
       window.removeEventListener('scroll', tryLoadMore) // 解绑事件！！！
     }
-  },[searchParams])
+  },[searchParams, haveMoreData])
 
   return (
    <>
@@ -99,15 +117,15 @@ const List: FC = () => {
     </div>
 
     <div className={styles.content}>
-      {/* {loading && (
+    {/* <div style={{height: '1000px'}}></div> */}
+      {loading && (
         <div style={{textAlign: 'center'}}>
           <Spin size="large" />
         </div>
-      )} */}
+      )}
       {/* 问卷列表 */}
-      <div style={{height: '1000px'}}></div>
       {
-        (list.length > 0) && list.map((item: any) => {
+        (!loading && list.length > 0) && list.map((item: any) => {
           const { _id } = item
           return <Card key={_id} {...item} />
         })
