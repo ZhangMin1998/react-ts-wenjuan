@@ -7,7 +7,7 @@ import ListSearch from '../../components/ListSearch/ListSearch'
 // import { getQuestionListService } from '../../services/request'
 // import { useRequest } from 'ahooks'
 import { useTitle } from 'ahooks'
-import useLoadQuestionDataList from '../../hooks/useLoadQuestionListData'
+// import useLoadQuestionDataList from '../../hooks/useLoadQuestionListData'
 
 const { Title } = Typography
 
@@ -37,8 +37,16 @@ const List: FC = () => {
 
   // 使用useRequest替换上面的
   // const { data = {}, loading } = useRequest(getQuestionListService) // 被下面代替
-  const { data = {}, loading } = useLoadQuestionDataList()
-  const { list = [], total = 0 } = data
+  // const { data = {}, loading } = useLoadQuestionDataList()
+  // const { list = [], total = 0 } = data
+
+  // 不用useLoadQuestionDataList 了  要做上拉加载了
+  const [pageNum, setPageNum] = useState(1) // List内部的数据 不在url参数中体现
+  const [list, setList] = useState([]) // 全部的列表数据，上拉加载更多 累计
+  const [total, setTotal] = useState(0) // 数据库总数
+  // const [loading, setLoading] = useState([])
+
+  const haveMoreData = total > list.length
 
   return (
    <>

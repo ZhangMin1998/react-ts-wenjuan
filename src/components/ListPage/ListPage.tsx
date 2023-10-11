@@ -28,7 +28,7 @@ const ListPage: FC<PropsType> = (props: PropsType) => {
     searchParams.set('pageSize', pageSize.toString())
     navigate({
       pathname,
-      search: searchParams.toString()
+      search: searchParams.toString() // 除了改变pageNum pageSize外 其它的url参数要带着
     })
   }
 
