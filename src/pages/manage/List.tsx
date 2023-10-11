@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useRef } from 'react'
 import styles from './common.module.scss'
 import { Typography, Spin  } from 'antd'
 import Card from '../../components/Card/Card'
@@ -53,17 +53,28 @@ const List: FC = () => {
   // const tryLoadMore = () => {
   //   console.log('loadMore...')
   // }
+  // 触发加载 防抖
+  const containerRef = useRef<HTMLDivElement>(null)
   const { run: tryLoadMore } = useDebounceFn(
     () => {
-      console.log('loadMore...')
+      const elem = containerRef.current
+      if (elem == null) return
+      const domRect = elem.getBoundingClientRect()
+      if (domRect == null) return
+      const { bottom } = domRect
+      // console.log(bottom, window.innerHeight)
+      
+      if (bottom <= window.innerHeight) { // div底部距离页面顶部的距离小于视口的高度 说明全部露出来了
+        console.log('执行加载')
+      }
     },
     {
-      wait: 100,
+      wait: 1000,
     },
   )
   // 1.当页面加载、或者url的keyword改变时，触发加载
   useEffect(() => {
-    tryLoadMore()
+    tryLoadMore() // 加载第一页 初始化
   },[searchParams])
   // 2.页面滚动时，触发加载
   useEffect(() => {
@@ -103,7 +114,11 @@ const List: FC = () => {
       }
     </div>
 
-    <div className={styles.footer}>loadMore...</div>
+    <div className={styles.footer}>
+      <div ref={containerRef}>
+        loadMore...
+      </div>
+    </div>
    </>
   )
 }
