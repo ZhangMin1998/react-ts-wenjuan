@@ -1,6 +1,6 @@
-import React, { FC, useState, useEffect, useRef } from 'react'
+import React, { FC, useState, useEffect, useRef, useMemo } from 'react'
 import styles from './common.module.scss'
-import { Typography, Spin  } from 'antd'
+import { Typography, Spin, Empty  } from 'antd'
 import Card from '../../components/Card/Card'
 import ListSearch from '../../components/ListSearch/ListSearch'
 import { useSearchParams } from 'react-router-dom'
@@ -47,6 +47,17 @@ const List: FC = () => {
   const haveMoreData = total > list.length
 
   const [searchParams] = useSearchParams() // url里面有keyword
+  const keyword = searchParams.get('keyword') || ''
+
+  const [started, setStarted] = useState(false) // 标记是否已经开始加载
+
+  // 监听 keyword 变化时重置信息
+  useEffect(() => {
+    setPageNum(1)
+    setList([])
+    setTotal(0)
+    setStarted(false)
+  }, [keyword])
 
   // 触发加载
   // const tryLoadMore = () => {
@@ -66,6 +77,7 @@ const List: FC = () => {
       if (bottom <= window.innerHeight) { // div底部距离页面顶部的距离小于视口的高度 说明全部露出来了
         console.log('执行加载')
         load() //  真正加载数据
+        setStarted(true)
       }
     },
     {
@@ -105,6 +117,14 @@ const List: FC = () => {
     }
   },[searchParams, haveMoreData])
 
+  // loadMore Elem
+  const loadMoreContentElem = useMemo(() => {
+    if (!started || loading) return <Spin size="large"/> // 让loading效果提前一点出来 因为用了防抖
+    if (!total) return <Empty description='暂无数据' />
+    if (!haveMoreData) return <span>全部数据加载完成</span>
+    return <span>开始加载下一页</span>
+  }, [started, loading, haveMoreData])
+
   return (
    <>
     <div className={styles.header}>
@@ -117,15 +137,15 @@ const List: FC = () => {
     </div>
 
     <div className={styles.content}>
-    {/* <div style={{height: '1000px'}}></div> */}
-      {loading && (
+      {/* <div style={{height: '1000px'}}></div> */}
+      {/* {loading && ( // loading效果
         <div style={{textAlign: 'center'}}>
           <Spin size="large" />
         </div>
-      )}
+      )} */}
       {/* 问卷列表 */}
       {
-        (!loading && list.length > 0) && list.map((item: any) => {
+        (list.length > 0) && list.map((item: any) => {
           const { _id } = item
           return <Card key={_id} {...item} />
         })
@@ -134,7 +154,7 @@ const List: FC = () => {
 
     <div className={styles.footer}>
       <div ref={containerRef}>
-        loadMore...
+        {loadMoreContentElem}
       </div>
     </div>
    </>
