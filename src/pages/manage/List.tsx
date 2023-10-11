@@ -3,10 +3,10 @@ import styles from './common.module.scss'
 import { Typography, Spin  } from 'antd'
 import Card from '../../components/Card/Card'
 import ListSearch from '../../components/ListSearch/ListSearch'
-// import { useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 // import { getQuestionListService } from '../../services/request'
 // import { useRequest } from 'ahooks'
-import { useTitle } from 'ahooks'
+import { useTitle, useDebounceFn } from 'ahooks'
 // import useLoadQuestionDataList from '../../hooks/useLoadQuestionListData'
 
 const { Title } = Typography
@@ -44,9 +44,37 @@ const List: FC = () => {
   const [pageNum, setPageNum] = useState(1) // List内部的数据 不在url参数中体现
   const [list, setList] = useState([]) // 全部的列表数据，上拉加载更多 累计
   const [total, setTotal] = useState(0) // 数据库总数
-  // const [loading, setLoading] = useState([])
-
+  // const [loading, setLoading] = useState(false)
   const haveMoreData = total > list.length
+
+  const [searchParams] = useSearchParams() // url里面有keyword
+
+  // 触发加载
+  // const tryLoadMore = () => {
+  //   console.log('loadMore...')
+  // }
+  const { run: tryLoadMore } = useDebounceFn(
+    () => {
+      console.log('loadMore...')
+    },
+    {
+      wait: 100,
+    },
+  )
+  // 1.当页面加载、或者url的keyword改变时，触发加载
+  useEffect(() => {
+    tryLoadMore()
+  },[searchParams])
+  // 2.页面滚动时，触发加载
+  useEffect(() => {
+    // if (haveMoreData) {
+    //   window.addEventListener('scroll', tryLoadMore)
+    // }
+    window.addEventListener('scroll', tryLoadMore)
+    return () => {
+      window.removeEventListener('scroll', tryLoadMore) // 解绑事件！！！
+    }
+  },[searchParams])
 
   return (
    <>
@@ -60,14 +88,15 @@ const List: FC = () => {
     </div>
 
     <div className={styles.content}>
-      {loading && (
+      {/* {loading && (
         <div style={{textAlign: 'center'}}>
           <Spin size="large" />
         </div>
-      )}
+      )} */}
       {/* 问卷列表 */}
+      <div style={{height: '1000px'}}></div>
       {
-        (!loading && list.length > 0) && list.map((item: any) => {
+        (list.length > 0) && list.map((item: any) => {
           const { _id } = item
           return <Card key={_id} {...item} />
         })
