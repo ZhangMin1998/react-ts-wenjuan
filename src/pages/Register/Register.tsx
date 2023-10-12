@@ -1,12 +1,16 @@
 import React, { FC } from 'react'
 import styles from './Register.module.scss'
-import { Typography, Space, Button, Checkbox, Form, Input } from 'antd'
+import { Typography, Space, Button, Checkbox, Form, Input, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { registerService } from '../../services/user'
+import { useRequest } from 'ahooks'
 
 const { Title } = Typography
 
 const Register:FC = () => {
+  const navigate = useNavigate()
+
   type FieldType = {
     username?: string;
     password?: string;
@@ -15,10 +19,23 @@ const Register:FC = () => {
   }
   const onFinish = (values: any) => {
     console.log('Success:', values)
+    run(values)
   }
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   }
+
+  const { run } = useRequest(async values => {
+    const { username, password } = values
+    await registerService(username, password)
+  }, {
+    manual: true,
+    debounceWait: 700, // 防抖
+    onSuccess: () => {
+      navigate(`/login`)  
+      message.success('注册成功')
+    }
+  })
 
   return (
     <div className={styles.container}>

@@ -1,8 +1,10 @@
 import React, { FC, useEffect } from 'react'
 import styles from './Login.module.scss'
-import { Typography, Space, Button, Checkbox, Form, Input } from 'antd'
+import { Typography, Space, Button, Checkbox, Form, Input, message } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { loginService } from '../../services/user'
+import { useRequest } from 'ahooks'
 
 const { Title } = Typography
 
@@ -22,10 +24,23 @@ const getUseStorage = () => {
 }
 
 const Login: FC = () => {
+  const navigate = useNavigate()
+
   useEffect(() => {
     const { username, password } = getUseStorage()
     form.setFieldsValue({ username, password })  // setFieldsValue  !!!!!
   }, [])
+
+  const { run } = useRequest(async (username:string, password:string) => {
+    await loginService(username, password)
+  }, {
+    manual: true,
+    debounceWait: 700, // 防抖
+    onSuccess: () => {
+      navigate(`/manage/list`)  
+      message.success('登录成功')
+    }
+  })
 
   type FieldType = {
     username?: string;
@@ -35,6 +50,8 @@ const Login: FC = () => {
   const onFinish = (values: any) => {
     // console.log('Success:', values)
     const { username, password, remember } = values || {}
+
+    run(username, password) // 调登录接口
     if (remember) {
       rememberUser(username, password)
     } else {

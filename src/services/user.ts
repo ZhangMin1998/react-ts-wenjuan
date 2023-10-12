@@ -19,7 +19,7 @@ export async function registerService(
   return data
 }
 
-// 注册
+// 登录
 export async function loginService(
   username: string,
   password: string
