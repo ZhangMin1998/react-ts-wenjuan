@@ -5,6 +5,7 @@ import { UserOutlined } from '@ant-design/icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginService } from '../../services/user'
 import { useRequest } from 'ahooks'
+import { setToken } from '../../utils/user-token'
 
 const { Title } = Typography
 
@@ -32,11 +33,14 @@ const Login: FC = () => {
   }, [])
 
   const { run } = useRequest(async (username:string, password:string) => {
-    await loginService(username, password)
+    const data = await loginService(username, password)
+    return data
   }, {
     manual: true,
     debounceWait: 700, // 防抖
-    onSuccess: () => {
+    onSuccess: (result:any) => {
+      const { token = '' } = result
+      setToken(token)
       navigate(`/manage/list`)  
       message.success('登录成功')
     }
