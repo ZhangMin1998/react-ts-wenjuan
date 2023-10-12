@@ -20,6 +20,7 @@ type PropsType = {
 const Card: FC<PropsType> = (props: PropsType) => {
   const navigate = useNavigate()
   const { _id, title, createdAt, answerCount, isPublished, isStar } = props
+
   // 修改标星
   const [isSatrState, setIsStarState] = useState(isStar)
   const { run: changeStar, loading: changStarLoading } = useRequest(async () => {
@@ -33,14 +34,14 @@ const Card: FC<PropsType> = (props: PropsType) => {
   })
 
   // 复制
-  // const duplicate = () => {
-  //   confirm({
-  //     title: '你确定复制该问卷吗?',
-  //     icon: <ExclamationCircleOutlined />,
-  //     onOk: () => message.success('复制成功')
-  //   })
-  // }
-  const { loading:duplicateLoading, run:duplicate } = useRequest(async () => {
+  const duplicate = () => {
+    confirm({
+      title: '你确定复制该问卷吗?',
+      icon: <ExclamationCircleOutlined />,
+      onOk: duplicateRun
+    })
+  }
+  const { loading:duplicateLoading, run:duplicateRun } = useRequest(async () => {
     const data = await duplicateQuestionService(_id)
     return data // 要有返回值，result才有值
   }, {
@@ -50,6 +51,22 @@ const Card: FC<PropsType> = (props: PropsType) => {
       navigate(`/question/edit/${result.id}`) // 复制成功后跳转到编辑页
     }
   })
+
+  // 删除
+  const [isDeleteState, setIsDeleteState] = useState(false)
+  const { loading:delLoading, run:del } = useRequest(async () => {
+    const data = await updateQuestionListService(_id, {isDeleted: true})
+    return data // 要有返回值，result才有值
+  }, {
+    manual: true,
+    onSuccess: () => {
+      message.success('删除成功')
+      setIsDeleteState(true)
+    }
+  })
+
+  // 如果已经删除的问卷 不显示  !!!!!!还可以这样
+  if (isDeleteState) return null
 
   return (
    <div className={styles.container}>
@@ -93,8 +110,9 @@ const Card: FC<PropsType> = (props: PropsType) => {
             description="你确定删除该问卷?"
             okText="确定"
             cancelText="取消"
+            onConfirm={del}
           >
-            <Button icon={<DeleteOutlined />} type='text' size='small'>
+            <Button icon={<DeleteOutlined />} type='text' size='small' disabled={delLoading}>
               删除
             </Button>
           </Popconfirm>
