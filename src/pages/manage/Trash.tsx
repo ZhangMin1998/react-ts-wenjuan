@@ -6,7 +6,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../components/ListSearch/ListSearch'
 import useLoadQuestionDataList from '../../hooks/useLoadQuestionListData'
 import ListPage from '../../components/ListPage/ListPage'
-import { updateQuestionListService } from '../../services/request'
+import { updateQuestionListService, deleteQuestionService } from '../../services/request'
 import { useRequest } from 'ahooks'
 
 const { Title } = Typography
@@ -53,14 +53,6 @@ const Trash:FC = () => {
   // 记录选中的id
   const [selectedIds, setSelectedIds] = useState<string[]>([])
 
-  const deleteAll = () => {
-    confirm({
-      title: '你确定删除选中的问卷吗?',
-      icon: <ExclamationCircleOutlined />,
-      onOk: () => message.success('删除成功')
-    })
-  }
-
   // 恢复
   const { loading:recoverLoading, run:recover } = useRequest(async () => {
     for await (const id of selectedIds) {
@@ -72,6 +64,25 @@ const Trash:FC = () => {
     onSuccess: () => {
       message.success('恢复成功')
       refresh() // 手动刷新列表
+      setSelectedIds([]) // 重置选中
+    }
+  })
+
+  // 彻底删除
+  const deleteAll = () => {
+    confirm({
+      title: '你确定删除选中的问卷吗?',
+      icon: <ExclamationCircleOutlined />,
+      onOk: delAll
+    })
+  }
+  const { run:delAll } = useRequest(async () => await deleteQuestionService(selectedIds), {
+    manual: true,
+    debounceWait: 700, // 防抖
+    onSuccess: () => {
+      message.success('删除成功')
+      refresh() // 手动刷新列表
+      setSelectedIds([]) // 重置选中
     }
   })
 
