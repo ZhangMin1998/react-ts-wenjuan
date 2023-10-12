@@ -6,6 +6,8 @@ import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../components/ListSearch/ListSearch'
 import useLoadQuestionDataList from '../../hooks/useLoadQuestionListData'
 import ListPage from '../../components/ListPage/ListPage'
+import { updateQuestionListService } from '../../services/request'
+import { useRequest } from 'ahooks'
 
 const { Title } = Typography
 const { confirm } = Modal
@@ -20,7 +22,7 @@ const Trash:FC = () => {
   //   { _id: 'q4', title: '问题4', isPublished: true, isStar: true, answerCount: 5, createdAt: '3月10日 13:24' }
   // ])
 
-  const { data = {}, loading } = useLoadQuestionDataList({
+  const { data = {}, loading, refresh } = useLoadQuestionDataList({
     // isStar: false,
     isDeleted: true
   })
@@ -59,11 +61,25 @@ const Trash:FC = () => {
     })
   }
 
+  // 恢复
+  const { loading:recoverLoading, run:recover } = useRequest(async () => {
+    for await (const id of selectedIds) {
+      await updateQuestionListService(id, {isDeleted: false})
+    }
+  }, {
+    manual: true,
+    debounceWait: 700, // 防抖
+    onSuccess: () => {
+      message.success('恢复成功')
+      refresh() // 手动刷新列表
+    }
+  })
+
   // 可以把 JSX 片段定义为一个变量
   const TableElem = <>
     <div style={{marginBottom: '16px'}}>
       <Space>
-        <Button type='primary' disabled={!selectedIds.length}>恢复</Button>
+        <Button type='primary' disabled={!selectedIds.length} onClick={recover}>恢复</Button>
         <Button danger disabled={!selectedIds.length} onClick={deleteAll}>彻底删除</Button>
       </Space>
     </div>

@@ -13,7 +13,7 @@ function useLoadQuestionDataList (opt: Partial<OptionType> = {}) {
   const { isStar = Mock.Random.boolean(), isDeleted = Mock.Random.boolean() } = opt
   const [searchParams] = useSearchParams()
 
-  const {data, loading, error} = useRequest(async () => {
+  const {data, loading, error, refresh} = useRequest(async () => {
     const keyword = searchParams.get('keyword') || ''
     const pageSize = parseInt(searchParams.get('pageSize') || '') || 10
     const pageNum = parseInt(searchParams.get('pageNum') || '') || 1
@@ -23,7 +23,7 @@ function useLoadQuestionDataList (opt: Partial<OptionType> = {}) {
   },{
     refreshDeps: [searchParams] // 依赖刷新  当它的值变化后，会重新触发请求
   })
-  return {data, loading, error}
+  return {data, loading, error, refresh}
 }
 
 export default useLoadQuestionDataList
