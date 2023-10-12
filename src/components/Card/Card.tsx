@@ -3,7 +3,7 @@ import styles from './Card.module.scss'
 import { useNavigate, Link } from 'react-router-dom'
 import { Button, Space, Divider, Tag, Popconfirm, Modal, message } from 'antd'
 import { EditOutlined, LineChartOutlined, DeleteOutlined, CopyOutlined, StarOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import { updateQuestionListService } from '../../services/request'
+import { updateQuestionListService, duplicateQuestionService } from '../../services/request'
 import { useRequest } from 'ahooks'
 
 const { confirm } = Modal
@@ -32,13 +32,24 @@ const Card: FC<PropsType> = (props: PropsType) => {
     }
   })
 
-  const duplicate = () => {
-    confirm({
-      title: '你确定复制该问卷吗?',
-      icon: <ExclamationCircleOutlined />,
-      onOk: () => message.success('复制成功')
-    })
-  }
+  // 复制
+  // const duplicate = () => {
+  //   confirm({
+  //     title: '你确定复制该问卷吗?',
+  //     icon: <ExclamationCircleOutlined />,
+  //     onOk: () => message.success('复制成功')
+  //   })
+  // }
+  const { loading:duplicateLoading, run:duplicate } = useRequest(async () => {
+    const data = await duplicateQuestionService(_id)
+    return data // 要有返回值，result才有值
+  }, {
+    manual: true,
+    onSuccess: (result) => {
+      message.success('复制成功')
+      navigate(`/question/edit/${result.id}`) // 复制成功后跳转到编辑页
+    }
+  })
 
   return (
    <div className={styles.container}>
@@ -74,7 +85,7 @@ const Card: FC<PropsType> = (props: PropsType) => {
           <Button icon={<StarOutlined />} type='text' size='small' onClick={changeStar} disabled={changStarLoading}>
             {isSatrState ? '取消标星' : '标星'}
           </Button>
-          <Button icon={<CopyOutlined />} type='text' size='small' onClick={duplicate}>
+          <Button icon={<CopyOutlined />} type='text' size='small' onClick={duplicate} disabled={duplicateLoading}>
             复制
           </Button>
           <Popconfirm
