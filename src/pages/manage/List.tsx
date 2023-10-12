@@ -81,7 +81,7 @@ const List: FC = () => {
       }
     },
     {
-      wait: 1000,
+      wait: 700,
     },
   )
   // 真正加载
@@ -93,9 +93,9 @@ const List: FC = () => {
     })
     return data
   },{
-    manual: true,
+    manual: true, // 手动
     onSuccess: (result, params) => {
-      console.log(result)
+      // console.log(result)
       const { list: newList = [], total = 0 } = result
       setList(list.concat(newList)) // 累加
       setTotal(total)

@@ -1,8 +1,10 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import styles from './Card.module.scss'
 import { useNavigate, Link } from 'react-router-dom'
 import { Button, Space, Divider, Tag, Popconfirm, Modal, message } from 'antd'
 import { EditOutlined, LineChartOutlined, DeleteOutlined, CopyOutlined, StarOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
+import { updateQuestionListService } from '../../services/request'
+import { useRequest } from 'ahooks'
 
 const { confirm } = Modal
 
@@ -16,8 +18,19 @@ type PropsType = {
 }
 
 const Card: FC<PropsType> = (props: PropsType) => {
-  const { _id, title, createdAt, answerCount, isPublished, isStar } = props
   const navigate = useNavigate()
+  const { _id, title, createdAt, answerCount, isPublished, isStar } = props
+  // 修改标星
+  const [isSatrState, setIsStarState] = useState(isStar)
+  const { run: changeStar, loading: changStarLoading } = useRequest(async () => {
+    await updateQuestionListService(_id, {isStar: isSatrState})
+  },{
+    manual: true,
+    onSuccess: () => {
+      setIsStarState(!isSatrState)
+      message.success('已更新')
+    }
+  })
 
   const duplicate = () => {
     confirm({
@@ -33,7 +46,7 @@ const Card: FC<PropsType> = (props: PropsType) => {
       <div className={styles.left}>
         <Link to={isPublished ? `/question/stat/${_id}` : `/question/edit/${_id}`}>
           <Space>
-            {isStar && <StarOutlined style={{color: 'red'}} />}
+            {isSatrState && <StarOutlined style={{color: 'red'}} />}
             {title}
           </Space>
         </Link>
@@ -58,8 +71,8 @@ const Card: FC<PropsType> = (props: PropsType) => {
       </div>
       <div className={styles.right}>
         <Space>
-          <Button icon={<StarOutlined />} type='text' size='small'>
-            {isStar ? '取消标星' : '标星'}
+          <Button icon={<StarOutlined />} type='text' size='small' onClick={changeStar} disabled={changStarLoading}>
+            {isSatrState ? '取消标星' : '标星'}
           </Button>
           <Button icon={<CopyOutlined />} type='text' size='small' onClick={duplicate}>
             复制
