@@ -12,7 +12,7 @@ const url = '	https://lf3-cdn2-tos.bytegoofy.com/ppx/mp/static/media/squared.9ff
 const UserInfo:FC = () => {
   const navigate = useNavigate()
 
-  const { data } = useRequest(getUserInfoService)
+  const { data } = useRequest(getUserInfoService) // ajax
   const { username } = data || {}
 
   const logout = () => {
