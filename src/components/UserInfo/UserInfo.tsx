@@ -6,16 +6,22 @@ import { Avatar, Button, message } from 'antd'
 import { getUserInfoService } from '../../services/user'
 import { useRequest } from 'ahooks'
 import { removeToken } from '../../utils/user-token'
+import useGetUserInfo from '../../hooks/useGetUserInfo'
+import { useDispatch } from 'react-redux'
+import { logoutReducer } from '../../store/modules/userReducer'
 
 const url = '	https://lf3-cdn2-tos.bytegoofy.com/ppx/mp/static/media/squared.9ff960bc.svg'
 
 const UserInfo:FC = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const { data } = useRequest(getUserInfoService) // ajax
-  const { username } = data || {}
+  // const { data } = useRequest(getUserInfoService) // ajax
+  // const { username } = data || {}
+  const { username } = useGetUserInfo()
 
   const logout = () => {
+    dispatch(logoutReducer()) // 清空 redux user的数据
     removeToken()
     message.success('退出成功')
     navigate(`/login`)
