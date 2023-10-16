@@ -1,13 +1,17 @@
 import React, { FC } from 'react'
 // import styles from './QuestionLayout.module.scss'
 import { Outlet } from 'react-router-dom'
+import { Spin } from 'antd'
+import useLoadUserData from '../hooks/useLoadUserData'
 
 const QuestionLayout:FC = () => {
+  const { waitingUserData } = useLoadUserData()
+
   return (
     <>
       <div>QuestionLayout header</div>
       <div>
-        <Outlet />
+      { !waitingUserData ? <div style={{ textAlign: 'center', marginTop:'100px' }}><Spin /></div> : <Outlet /> }
       </div>
       <div>QuestionLayout footer</div>
     </>
