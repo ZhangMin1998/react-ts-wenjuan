@@ -14,6 +14,9 @@ const Star = lazy(() => import('../pages/manage/Star'))
 const Edit = lazy(() => import('../pages/question/edit'))
 const Stat = lazy(() => import('../pages/question/stat'))
 
+const ClassDemo = lazy(() => import('../components/ErrorDemo/ClassDemo'))
+const FunctionDemo = lazy(() => import('../components/ErrorDemo/FunctionalDemo'))
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -48,6 +51,14 @@ const router = createBrowserRouter([
             element: <Star />
           }
         ]
+      },
+      {
+        path: 'error1',
+        element: <ClassDemo />
+      },
+      {
+        path: 'error2',
+        element: <FunctionDemo />
       },
       {
         path: '*',
