@@ -25,7 +25,7 @@ function useLoadUserData() {
     }
   }) // ajax
 
-  // 判断是否已经获取用户信息
+  // 判断redux store是否已经获取用户信息
   const { username } = useGetUserInfo() //redux store
   useEffect(() => {
     if (username) {
