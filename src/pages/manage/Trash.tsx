@@ -13,7 +13,7 @@ const { Title } = Typography
 const { confirm } = Modal
 
 const Trash:FC = () => {
-  useTitle('妞妞问卷 - 回收站')
+  useTitle('敏敏问卷 - 回收站')
 
   // const [list, setList] = useState([
   //   { _id: 'q1', title: '问题1', isPublished: true, isStar: true, answerCount: 5, createdAt: '3月10日 13:24' },

@@ -25,7 +25,7 @@ const Logo:FC = () => {
             <FormOutlined />
           </Title>
           <Title>
-            妞妞问卷
+            敏敏问卷
           </Title>
         </Space>
       </Link>

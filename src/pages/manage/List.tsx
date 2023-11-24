@@ -12,7 +12,7 @@ import { useTitle, useDebounceFn, useRequest } from 'ahooks'
 const { Title } = Typography
 
 const List: FC = () => {
-  useTitle('妞妞问卷 - 我的问卷')
+  useTitle('敏敏问卷 - 我的问卷')
   // const [searchParams] = useSearchParams()
   // console.log('aaa', searchParams.get('aaa'))
   

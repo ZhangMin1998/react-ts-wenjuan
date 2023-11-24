@@ -10,7 +10,7 @@ import ListPage from '../../components/ListPage/ListPage'
 const { Title } = Typography
 
 const Star:FC = () => {
-  useTitle('妞妞问卷 - 星标问卷')
+  useTitle('敏敏问卷 - 星标问卷')
 
   // const [list, setList] = useState([
   //   { _id: 'q1', title: '问题1', isPublished: true, isStar: true, answerCount: 5, createdAt: '3月10日 13:24' },
