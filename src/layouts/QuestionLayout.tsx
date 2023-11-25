@@ -16,7 +16,6 @@ const QuestionLayout:FC = () => {
       <div style={{ height: '100vh' }}>
       { waitingUserData ? <div style={{ textAlign: 'center', marginTop:'100px' }}><Spin /></div> : <Outlet /> }
       </div>
-      <div>QuestionLayout footer</div>
     </>
   )
 }
