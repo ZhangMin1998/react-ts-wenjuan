@@ -9,6 +9,9 @@ export default configureStore({
   reducer: {
     // 注册子模块
     userStore: userReducer
+    // 组件列表
+    
+    // 问卷信息
     // 还可以扩展其他模块
   }
 })
