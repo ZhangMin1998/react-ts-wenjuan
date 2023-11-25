@@ -7,7 +7,7 @@ import EditCanvas from './EditCanvas'
 const Edit:FC = () => {
   // const { id = '' } = useParams()
 
-  const { data, loading } = useLoadQuestionData()
+  const { loading } = useLoadQuestionData()
   
   return (
     <div className={styles.container}>
@@ -17,7 +17,7 @@ const Edit:FC = () => {
           <div className={styles.left}>left</div>
           <div className={styles.main}>
             <div className={styles.canvas_wrapper}>
-              <EditCanvas />
+              <EditCanvas loading={loading} />
             </div>
           </div>
           <div className={styles.right}>right</div>

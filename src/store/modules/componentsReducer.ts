@@ -8,26 +8,30 @@ export type ComponentInfoType = {
   props: ComponentPropsType
 }
 
-// const INIT_STATE: ComponentInfoType = {
-//   username: ''
-// }
+export type ComponentsStateType = {
+  componentList: Array<ComponentInfoType>
+}
 
-// const userSlice = createSlice({
-//   name: 'user', // 模块名唯一
+const INIT_STATE: ComponentsStateType = {
+  componentList: []
+}
 
-//   // 初始数据
-//   initialState: INIT_STATE,
+const componentsSlice = createSlice({
+  name: 'components', // 模块名唯一
 
-//   reducers: {
-//     loginReducer (state: ComponentInfoType, action: PayloadAction<ComponentInfoType>) {
-//       return action.payload // 设置username
-//     },
-//     logoutReducer: () => INIT_STATE
-//   }
-// })
+  // 初始数据
+  initialState: INIT_STATE,
 
-// const userReducer = userSlice.reducer
+  reducers: {
+    // 重置所有组件
+    resetComponents: (state: ComponentsStateType, action: PayloadAction<ComponentsStateType>) => {
+      return action.payload
+    }
+  }
+})
 
-// export const { loginReducer, logoutReducer } = userSlice.actions
+const componentsReducer = componentsSlice.reducer
 
-// export default userReducer
+export const { resetComponents } = componentsSlice.actions
+
+export default componentsReducer
