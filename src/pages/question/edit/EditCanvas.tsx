@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import styles from './EditCanvas.module.scss'
 import { Spin } from 'antd'
+import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 
 // 临时展示2个组件
 import QuestionInput from '../../../components/QuestionComponents/QuestonInput/Component'
@@ -11,6 +12,9 @@ type PropsType = {
 }
 
 const EditCanvas: FC<PropsType> = ({loading}) => {
+  const { componentList } = useGetComponentInfo()
+  console.log('componentList', componentList)
+  
   if (loading) {
     return <div style={{ textAlign: 'center', marginTop: '24px' }}>
       <Spin />

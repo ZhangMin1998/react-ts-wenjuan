@@ -4,7 +4,7 @@ import componentsReducer, { ComponentsStateType } from './modules/componentsRedu
 
 export type StateType = {
   userStore: UserStateType
-  components: ComponentsStateType
+  componentsStore: ComponentsStateType
 }
 
 export default configureStore({
