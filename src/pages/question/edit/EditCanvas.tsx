@@ -1,9 +1,11 @@
-import React, { FC } from 'react'
+import React, { FC, MouseEvent } from 'react'
 import styles from './EditCanvas.module.scss'
 import { Spin } from 'antd'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
-import { ComponentInfoType } from '../../../store/modules/componentsReducer'
+import { ComponentInfoType, changeSelectedId } from '../../../store/modules/componentsReducer'
 import { getComponentConfByType } from '../../../components/QuestionComponents'
+import { useDispatch } from 'react-redux'
+import classNames from 'classnames'
 
 // 临时展示2个组件
 // import QuestionInput from '../../../components/QuestionComponents/QuestonInput/Component'
@@ -23,8 +25,14 @@ function getComponent(componentInfo:ComponentInfoType) {
 }
 
 const EditCanvas: FC<PropsType> = ({loading}) => {
-  const { componentList } = useGetComponentInfo()
-  console.log('componentList', componentList)
+  const { componentList, selectedId } = useGetComponentInfo()
+  // console.log('componentList', componentList)
+  const dispatch = useDispatch()
+
+  function handleClick(event:MouseEvent, id: string){
+    event.stopPropagation() // 阻止冒泡
+    dispatch(changeSelectedId(id))
+  }
   
   if (loading) {
     return <div style={{ textAlign: 'center', marginTop: '24px' }}>
@@ -35,7 +43,15 @@ const EditCanvas: FC<PropsType> = ({loading}) => {
     {componentList.map(item => {
       const { fe_id } = item
 
-      return <div className={styles.component_wrapper} key={fe_id}>
+      // 拼接className
+      const wrapperDefaultClassName = styles.component_wrapper
+      const selectedClassName = styles.selected
+      const wrapperClassName = classNames({
+        [wrapperDefaultClassName]: true,
+        [selectedClassName]: fe_id === selectedId
+      })
+
+      return <div className={wrapperClassName} key={fe_id} onClick={(e) => handleClick(e, fe_id)}>
         <div className={styles.component}>
           {getComponent(item)}
         </div>

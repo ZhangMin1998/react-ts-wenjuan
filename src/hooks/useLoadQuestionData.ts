@@ -29,9 +29,16 @@ function useLoadQuestionData() {
     if(!data) return
     const { title = '', componentList = [] } = data
 
+    // 获取默认的selectedId
+    let selectedId = ''
+    if (componentList.length) {
+      selectedId = componentList[0].fe_id // 默认选中第一个组件
+    }
+
     // 把componentList存储到redux
     dispatch(resetComponents({
-      componentList
+      componentList,
+      selectedId
     }))
 
   }, [data])
