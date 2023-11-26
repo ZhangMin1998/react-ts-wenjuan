@@ -3,7 +3,7 @@ import { ComponentPropsType } from '../../components/QuestionComponents'
 // import { produce } from 'immer'
 
 export type ComponentInfoType = {
-  fe_id: string // TODO
+  fe_id: string // 前端生成的id,服务端mongodb不认这种格式，自定义一个fe_id
   type: string
   title: string
   props: ComponentPropsType
