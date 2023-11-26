@@ -1,13 +1,27 @@
 import React, { FC } from 'react'
 import { Typography } from 'antd'
+import { nanoid } from '@reduxjs/toolkit'
 import { componentConfGroup, ComponentConfType } from '../../../components/QuestionComponents'
+import { useDispatch } from 'react-redux'
+import { addComponent } from '../../../store/modules/componentsReducer'
 import styles from './ComponentLib.module.scss'
 
 const { Title } = Typography
 
 function getComponent(c: ComponentConfType) {
-  const { title, type, Component} = c
-  return <div className={styles.wrapper}>
+  const { title, type, Component, defaultProps} = c
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const dispatch = useDispatch()
+  function handleClick() {
+    dispatch(addComponent({
+      fe_id: nanoid(),
+      type,
+      title,
+      props: defaultProps
+    }))
+  }
+  return <div className={styles.wrapper} key={type} onClick={handleClick}>
     <div className={styles.component}>
       <Component />
     </div>

@@ -37,12 +37,27 @@ const componentsSlice = createSlice({
     // // 修改selectedId
     changeSelectedId: (state: ComponentsStateType, action: PayloadAction<string>) => {
       state.selectedId =  action.payload
-    }
+    },
+    // 添加新组件
+    addComponent: (state: ComponentsStateType, action: PayloadAction<ComponentInfoType>) => {
+      const newComponent =  action.payload
+      const { selectedId, componentList } = state
+      const index = componentList.findIndex(c => c.fe_id === selectedId)
+
+      if (index < 0) {
+        // 未选中任何组件, 直接尾部添加
+        state.componentList.push(newComponent)
+      } else {
+        // 选中破了组件 插入到index后面
+        state.componentList.splice(index + 1, 0, newComponent)
+      }
+      state.selectedId = newComponent.fe_id // 添加新组件后直接选中
+    },
   }
 })
 
 const componentsReducer = componentsSlice.reducer
 
-export const { resetComponents, changeSelectedId } = componentsSlice.actions
+export const { resetComponents, changeSelectedId, addComponent } = componentsSlice.actions
 
 export default componentsReducer
