@@ -2,13 +2,24 @@ import React, { FC } from 'react'
 import styles from './EditCanvas.module.scss'
 import { Spin } from 'antd'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
+import { ComponentInfoType } from '../../../store/modules/componentsReducer'
+import { getComponentConfByType } from '../../../components/QuestionComponents'
 
 // 临时展示2个组件
-import QuestionInput from '../../../components/QuestionComponents/QuestonInput/Component'
-import QuestionTitle from '../../../components/QuestionComponents/QuestionTitle/Component'
+// import QuestionInput from '../../../components/QuestionComponents/QuestonInput/Component'
+// import QuestionTitle from '../../../components/QuestionComponents/QuestionTitle/Component'
 
 type PropsType = {
   loading: boolean
+}
+
+function getComponent(componentInfo:ComponentInfoType) {
+  const { type, props } = componentInfo
+
+  const componentConf = getComponentConfByType(type)
+  if (componentConf == null) return null
+  const { Component } = componentConf
+  return <Component {...props} />
 }
 
 const EditCanvas: FC<PropsType> = ({loading}) => {
@@ -21,7 +32,16 @@ const EditCanvas: FC<PropsType> = ({loading}) => {
     </div>
   }
   return <div className={styles.canvas}>
-    <div className={styles.component_wrapper}>
+    {componentList.map(item => {
+      const { fe_id } = item
+
+      return <div className={styles.component_wrapper} key={fe_id}>
+        <div className={styles.component}>
+          {getComponent(item)}
+        </div>
+      </div>
+    })}
+    {/* <div className={styles.component_wrapper}>
       <div className={styles.component}>
         <QuestionTitle />
       </div>
@@ -30,7 +50,7 @@ const EditCanvas: FC<PropsType> = ({loading}) => {
       <div className={styles.component}>
         <QuestionInput />
       </div>
-    </div>
+    </div> */}
   </div>
 }
 
