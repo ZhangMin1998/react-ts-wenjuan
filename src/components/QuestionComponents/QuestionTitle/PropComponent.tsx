@@ -7,8 +7,8 @@ const PropComponent:FC<QuestionTitlePropsType> = (props: QuestionTitlePropsType)
   const [form] = Form.useForm()
 
   useEffect(() => {
-    form.setFieldValue({ text, level, isCenter }, { text, level, isCenter })
-  }, [text, level, isCenter])
+    form.setFieldsValue({ text, level, isCenter })
+  }, [text, level, isCenter, form])
 
   return <Form
     layout='vertical'
