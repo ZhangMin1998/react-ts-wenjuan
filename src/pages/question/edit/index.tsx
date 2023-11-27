@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { changeSelectedId } from '../../../store/modules/componentsReducer'
 import LeftPanel from './LeftPanel'
 import RightPanel from './RightPanel'
+import EditHeader from './EditHeader'
 
 const Edit:FC = () => {
   // const { id = '' } = useParams()
@@ -21,7 +22,10 @@ const Edit:FC = () => {
   
   return (
     <div className={styles.container}>
-      <div style={{backgroundColor: '#fff',height: '40px'}}>Header</div>
+      {/* <div style={{backgroundColor: '#fff',height: '40px'}}>
+        <EditHeader />
+      </div> */}
+      <EditHeader />
       <div className={styles.container_wrapper}>
         <div className={styles.content}>
           <div className={styles.left}>
