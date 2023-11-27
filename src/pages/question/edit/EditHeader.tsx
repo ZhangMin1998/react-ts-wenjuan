@@ -3,6 +3,7 @@ import styles from './EditHeader.module.scss'
 import { Button, Typography, Space } from 'antd'
 import { LeftOutlined, CheckOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
+import EditToolBar from './EditToolBar'
 
 const { Title } = Typography
 
@@ -17,7 +18,9 @@ const EditHeader:FC = () => {
           <Title>问卷标题</Title>
         </Space>
       </div>
-      <div className={styles.main}>main</div>
+      <div className={styles.main}>
+        <EditToolBar />
+      </div>
       <div className={styles.right}>
         <Space>
           <Button icon={<CheckOutlined />}>保存</Button>
