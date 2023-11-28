@@ -6,22 +6,23 @@ import { ComponentInfoType } from "./modules/componentsReducer";
  * @param componentList 组件列表
  */
 export function getNextSelectedId(fe_id: string, componentList: ComponentInfoType[]) {
-  const index = componentList.findIndex(c => c.fe_id === fe_id)
+  const visibleComponentList = componentList.filter(c => !c.isHidden)
+  const index = visibleComponentList.findIndex(c => c.fe_id === fe_id)
   if (index < 0) return ''
 
   // 重新计算selectedId
   let newSelectedId = ''
-  const length = componentList.length
+  const length = visibleComponentList.length
   if (length < 2) {
     // 组件长度就一个，被删除，就没了
     newSelectedId = ''
   } else {
     if (index + 1 === length) {
       // 要删除最后一个, 选中上一个
-      newSelectedId = componentList[index - 1].fe_id
+      newSelectedId = visibleComponentList[index - 1].fe_id
     } else {
       // 要删除的不是最后一个，删除以后，选中下一个
-      newSelectedId = componentList[index + 1].fe_id
+      newSelectedId = visibleComponentList[index + 1].fe_id
     }
   }
   return newSelectedId
