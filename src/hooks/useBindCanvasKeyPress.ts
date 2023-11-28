@@ -4,6 +4,8 @@ import {
   removeSelectedComponent,
   copySelectedComponent,
   pasteCopiedComponent,
+  selecPrevComponent,
+  selecNextComponent
 } from '../store/modules/componentsReducer'
 
 /**
@@ -35,6 +37,20 @@ function useBindCanvasKeyPress () {
     if (!isActiveElementValid()) return
     dispatch(pasteCopiedComponent())
   })
+
+  // 选中上一个
+  useKeyPress(['uparrow'], () => {
+    if (!isActiveElementValid()) return
+    dispatch(selecPrevComponent())
+  })
+
+  // 选中下一个
+  useKeyPress(['downarrow'], () => {
+    if (!isActiveElementValid()) return
+    dispatch(selecNextComponent())
+  })
+
+  // TODO 撤销 重做
 }
 
 export default useBindCanvasKeyPress
