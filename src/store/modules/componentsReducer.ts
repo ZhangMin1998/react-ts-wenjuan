@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ComponentPropsType } from '../../components/QuestionComponents'
-import { getNextSelectedId } from '../utils'
+import { getNextSelectedId, insertNewComponent } from '../utils'
+import cloneDeep from 'lodash.clonedeep'
+import { nanoid } from '@reduxjs/toolkit'
 // import { produce } from 'immer'
 
 export type ComponentInfoType = {
@@ -15,11 +17,13 @@ export type ComponentInfoType = {
 export type ComponentsStateType = {
   selectedId: string,
   componentList: Array<ComponentInfoType>
+  copiedComponent: ComponentInfoType | null
 }
 
 const INIT_STATE: ComponentsStateType = {
   selectedId: '',
-  componentList: []
+  componentList: [],
+  copiedComponent: null
 }
 
 const componentsSlice = createSlice({
@@ -45,17 +49,18 @@ const componentsSlice = createSlice({
     // 添加新组件
     addComponent: (state: ComponentsStateType, action: PayloadAction<ComponentInfoType>) => {
       const newComponent =  action.payload
-      const { selectedId, componentList } = state
-      const index = componentList.findIndex(c => c.fe_id === selectedId)
+      // const { selectedId, componentList } = state
+      // const index = componentList.findIndex(c => c.fe_id === selectedId)
 
-      if (index < 0) {
-        // 未选中任何组件, 直接尾部添加
-        state.componentList.push(newComponent)
-      } else {
-        // 选中破了组件 插入到index后面
-        state.componentList.splice(index + 1, 0, newComponent)
-      }
-      state.selectedId = newComponent.fe_id // 添加新组件后直接选中
+      // if (index < 0) {
+      //   // 未选中任何组件, 直接尾部添加
+      //   state.componentList.push(newComponent)
+      // } else {
+      //   // 选中破了组件 插入到index后面
+      //   state.componentList.splice(index + 1, 0, newComponent)
+      // }
+      // state.selectedId = newComponent.fe_id // 添加新组件后直接选中
+      insertNewComponent(state, newComponent)
     },
     // 修改组件属性
     changeComponentProps: (state: ComponentsStateType, action: PayloadAction<{fe_id: string, newProps:ComponentPropsType}>) => {
@@ -111,6 +116,20 @@ const componentsSlice = createSlice({
       if (curComp) {
         curComp.isLocked = !curComp.isLocked
       }
+    },
+    // 拷贝当前选中的组件
+    copySelectedComponent: (state: ComponentsStateType) => {
+      const { selectedId, componentList = [] } = state
+      const selectedComponent = componentList.find(c => c.fe_id === selectedId)
+      if (selectedComponent == null) return
+      state.copiedComponent = cloneDeep(selectedComponent) // 深拷贝
+    },
+    // 粘贴组件
+    pasteCopiedComponent: (state: ComponentsStateType) => {
+      const { copiedComponent } = state
+      if (copiedComponent == null) return
+      copiedComponent.fe_id = nanoid() // 修改fe_id 粘贴后组件de_id保证唯一
+      insertNewComponent(state, copiedComponent)
     }
   }
 })
@@ -124,7 +143,9 @@ export const {
   changeComponentProps,
   removeSelectedComponent,
   changeComponentHidden,
-  toggleComponentLocked
+  toggleComponentLocked,
+  copySelectedComponent,
+  pasteCopiedComponent
 } = componentsSlice.actions
 
 export default componentsReducer
