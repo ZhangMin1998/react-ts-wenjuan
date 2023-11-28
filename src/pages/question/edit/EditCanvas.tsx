@@ -5,6 +5,7 @@ import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 import { ComponentInfoType, changeSelectedId } from '../../../store/modules/componentsReducer'
 import { getComponentConfByType } from '../../../components/QuestionComponents'
 import { useDispatch } from 'react-redux'
+import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress'
 import classNames from 'classnames'
 
 // 临时展示2个组件
@@ -33,6 +34,9 @@ const EditCanvas: FC<PropsType> = ({loading}) => {
     event.stopPropagation() // 阻止冒泡
     dispatch(changeSelectedId(id))
   }
+
+  // 绑定快捷键
+  useBindCanvasKeyPress()
   
   if (loading) {
     return <div style={{ textAlign: 'center', marginTop: '24px' }}>
