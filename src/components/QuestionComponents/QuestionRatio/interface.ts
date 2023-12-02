@@ -3,17 +3,16 @@ export type OptionType = {
   text: string
 }
 
-export type QuestionRadioPropsType = {
+export type QuestionRatioPropsType = {
   title?: string
   isVertical?: boolean
   options?: Array<OptionType>
   value?: string // 选中值
 
-  onChange?: (newProps: QuestionRadioPropsType) => void
-  disabled?: boolean
+  onChange?: (newProps: QuestionRatioPropsType) => void
 }
 
-export const QuestionRadioDefaultProps: QuestionRadioPropsType = {
+export const QuestionRatioDefaultProps: QuestionRatioPropsType = {
   title: '单选标题',
   isVertical: false,
   options: [
