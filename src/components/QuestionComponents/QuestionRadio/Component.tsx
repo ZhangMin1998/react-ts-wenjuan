@@ -3,7 +3,7 @@ import { Typography, Radio, Space } from 'antd'
 import { QuestionRadioPropsType, QuestionRadioDefaultProps } from './interface'
 
 const { Paragraph } = Typography
-const QuestionTitle: FC<QuestionRadioPropsType> =  (props:QuestionRadioPropsType) => {
+const QuestionRadio: FC<QuestionRadioPropsType> =  (props:QuestionRadioPropsType) => {
   const { title = '', isVertical = false, options = [], value = '' } = { ...QuestionRadioDefaultProps, ...props }
 
   return <div>
@@ -12,11 +12,11 @@ const QuestionTitle: FC<QuestionRadioPropsType> =  (props:QuestionRadioPropsType
       <Space direction={isVertical ? 'vertical' : 'horizontal'}>
         {options.map(opt => {
           const { text, value } = opt
-          return <Radio value={value}>{text}</Radio>
+          return <Radio value={value} key={value}>{text}</Radio>
         })}
       </Space>
     </Radio.Group>
   </div>
 }
 
-export default QuestionTitle
+export default QuestionRadio
