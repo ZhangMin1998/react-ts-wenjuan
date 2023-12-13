@@ -1,11 +1,12 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, ChangeEvent } from 'react'
 import { Input, message } from 'antd'
 import classNames from 'classnames'
 import { useDispatch } from 'react-redux'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 import styles from './Layers.module.scss'
 import { 
-  changeSelectedId
+  changeSelectedId,
+  changeComponentTitle
 } from '../../../store/modules/componentsReducer'
 
 const Layers: FC = () => {
@@ -25,8 +26,22 @@ const Layers: FC = () => {
     if (fe_id !== selectedId) {
       // 当前组件未被选中，执行选中
       dispatch(changeSelectedId(fe_id))
+      setChangingTitleId('')
       return
     }
+    // 点击修改标题
+    setChangingTitleId(fe_id)
+  }
+
+  // 修改标题
+  const changeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+    const newTitle = event.target.value.trim()
+    if (!newTitle) return
+    if (!selectedId) return
+    dispatch(changeComponentTitle({
+      fe_id: selectedId,
+      title: newTitle
+    }))
   }
 
   return (
@@ -46,10 +61,16 @@ const Layers: FC = () => {
           <div key={fe_id} className={styles.wrapper}>
             <div className={titleClassName} onClick={() => handleTitleClick(fe_id)}>
               {fe_id === changingTitleId && (
-                <Input />
+                <Input
+                  value={title}
+                  onChange={changeTitle}
+                  onPressEnter={() => setChangingTitleId('')}
+                  onBlur={() => setChangingTitleId('')}
+                />
               )}
               {fe_id !== changingTitleId && title}
             </div>
+            <div className={styles.handler}>按钮</div>
           </div>
         )
       })}
