@@ -1,12 +1,15 @@
 import React, { FC, useState, ChangeEvent } from 'react'
-import { Input, message } from 'antd'
+import { Input, message, Button, Space } from 'antd'
 import classNames from 'classnames'
 import { useDispatch } from 'react-redux'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
+import { EyeInvisibleOutlined, LockOutlined } from '@ant-design/icons'
 import styles from './Layers.module.scss'
 import { 
   changeSelectedId,
-  changeComponentTitle
+  changeComponentTitle,
+  changeComponentHidden,
+  toggleComponentLocked,
 } from '../../../store/modules/componentsReducer'
 
 const Layers: FC = () => {
@@ -44,6 +47,19 @@ const Layers: FC = () => {
     }))
   }
 
+  // 切换隐藏 / 显示
+  const changeHidden = (fe_id: string, isHidden: boolean) => {
+    dispatch(changeComponentHidden({
+      fe_id,
+      isHidden
+    }))
+  }
+
+  // 切换锁定 / 解锁
+  const changeLocked = (fe_id: string) => {
+    dispatch(toggleComponentLocked({ fe_id }))
+  }
+
   return (
     <>
       {componentList.map((c:any) => {
@@ -70,7 +86,26 @@ const Layers: FC = () => {
               )}
               {fe_id !== changingTitleId && title}
             </div>
-            <div className={styles.handler}>按钮</div>
+            <div className={styles.handler}>
+              <Space>
+                <Button
+                  size="small"
+                  shape="circle"
+                  icon={<EyeInvisibleOutlined />}
+                  className={!isHidden ? styles.btn : ''}
+                  type={isHidden ? 'primary' : 'text'}
+                  onClick={() => changeHidden(fe_id, !isHidden)}
+                />
+                <Button
+                  size="small"
+                  shape="circle"
+                  icon={<LockOutlined />}
+                  className={!isLocked ? styles.btn : ''}
+                  type={isLocked ? 'primary' : 'text'}
+                  onClick={() => changeLocked(fe_id)}
+                />
+              </Space>
+            </div>
           </div>
         )
       })}
