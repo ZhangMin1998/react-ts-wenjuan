@@ -5,6 +5,7 @@ import { useRequest } from 'ahooks'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { resetComponents } from '../store/modules/componentsReducer'
+import { resetPageInfoReducer } from '../store/modules/pageInfoReducer'
 
 function useLoadQuestionData() {
   const { id = '' } = useParams()
@@ -27,7 +28,14 @@ function useLoadQuestionData() {
   // 根据获取的data 设置redux store
   useEffect(() => {
     if(!data) return
-    const { title = '', componentList = [] } = data
+    const { 
+      title = '',
+      componentList = [],
+      desc = '',
+      js = '',
+      css = '',
+      isPublished = false,
+    } = data
 
     // 获取默认的selectedId
     let selectedId = ''
@@ -41,6 +49,9 @@ function useLoadQuestionData() {
       selectedId,
       copiedComponent: null
     }))
+
+    // 把 pageInfo 存储到 redux store
+    dispatch(resetPageInfoReducer({ title, desc, js, css, isPublished }))
 
   }, [data])
   
