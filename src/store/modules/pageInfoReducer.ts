@@ -23,7 +23,7 @@ const pageInfoSlice = createSlice({
 
   reducers: {
     resetPageInfoReducer (state: PageInfoType, action: PayloadAction<PageInfoType>) {
-      return action.payload // 设置username
+      return action.payload
     }
   }
 })
