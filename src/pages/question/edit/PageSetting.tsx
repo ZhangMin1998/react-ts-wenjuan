@@ -8,6 +8,8 @@ const { TextArea } = Input
 
 const PageSetting: FC = () => {
   const pageInfo = useGetPageInfo()
+  console.log(pageInfo)
+  
   const [form] = Form.useForm()
   const dispatch = useDispatch()
 

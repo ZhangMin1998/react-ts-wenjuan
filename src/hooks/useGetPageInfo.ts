@@ -4,7 +4,7 @@ import { PageInfoType } from '../store/modules/pageInfoReducer'
 
 // 使用redux的数据
 function useGetPageInfo() {
-  const pageInfo = useSelector<StateType>(state => state.userStore) as PageInfoType
+  const pageInfo = useSelector<StateType>(state => state.pageInfoStore) as PageInfoType
   return pageInfo
 }
 
