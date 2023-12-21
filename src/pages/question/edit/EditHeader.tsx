@@ -1,9 +1,12 @@
 import React, { ChangeEvent, FC, useState } from 'react'
 import styles from './EditHeader.module.scss'
 import { Button, Typography, Space, Input } from 'antd'
-import { LeftOutlined, CheckOutlined, EditOutlined } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
+import { LeftOutlined, LoadingOutlined, EditOutlined } from '@ant-design/icons'
+import { useNavigate, useParams } from 'react-router-dom'
 import useGetPageInfo from '../../../hooks/useGetPageInfo'
+import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
+import { updateQuestionListService } from '../../../services/request'
+import { useRequest, useKeyPress } from 'ahooks'
 import { useDispatch } from 'react-redux'
 import { changePageTitle } from '../../../store/modules/pageInfoReducer'
 import EditToolBar from './EditToolBar'
@@ -38,6 +41,38 @@ const TitleElem: FC = () => {
     </Space>
   )
 }
+
+// 保存按钮
+const SaveButton: FC = () => {
+  const { id } = useParams()
+  const { componentList = [] } = useGetComponentInfo()
+  const pageInfo = useGetPageInfo()
+
+  const { loading, run: save } = useRequest(
+    async () => {
+      if (!id) return
+      await updateQuestionListService(id, { ...pageInfo, componentList })
+    },
+    { manual: true }
+  )
+
+  // 快捷键
+  useKeyPress(['ctrl.s', 'meta.s'], (event: KeyboardEvent) => {
+    event.preventDefault() // 阻止网页的保存行为
+    if (!loading) save()
+  })
+
+  return (
+    <Button
+      icon={loading ? <LoadingOutlined /> : null}
+      onClick={save}
+      disabled={loading}
+    >
+      保存
+    </Button>
+  )
+}
+
 const EditHeader:FC = () => {
   const navigate = useNavigate()
 
@@ -54,7 +89,7 @@ const EditHeader:FC = () => {
       </div>
       <div className={styles.right}>
         <Space>
-          <Button icon={<CheckOutlined />}>保存</Button>
+          <SaveButton />
           <Button type='primary'>发布</Button>
         </Space>
       </div>
