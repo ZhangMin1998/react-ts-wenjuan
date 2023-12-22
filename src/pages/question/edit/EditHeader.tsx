@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import useGetPageInfo from '../../../hooks/useGetPageInfo'
 import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 import { updateQuestionListService } from '../../../services/request'
-import { useRequest, useKeyPress } from 'ahooks'
+import { useRequest, useKeyPress, useDebounceEffect } from 'ahooks'
 import { useDispatch } from 'react-redux'
 import { changePageTitle } from '../../../store/modules/pageInfoReducer'
 import EditToolBar from './EditToolBar'
@@ -62,6 +62,14 @@ const SaveButton: FC = () => {
     if (!loading) save()
   })
 
+  // 自动保存 （不是定期保存，不是定时器）
+  useDebounceEffect(() => {
+    save()
+  },[componentList, pageInfo],
+  {
+    wait: 1000
+  })
+  
   return (
     <Button
       icon={loading ? <LoadingOutlined /> : null}
