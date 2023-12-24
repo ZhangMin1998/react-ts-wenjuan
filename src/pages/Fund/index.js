@@ -56,7 +56,7 @@ const App = () => {
         },
         {
           label: '性别',
-          name: 'gender',
+          name: 'sex',
           type: 'select',
           options: [
             { label: '男', value: '男' },
