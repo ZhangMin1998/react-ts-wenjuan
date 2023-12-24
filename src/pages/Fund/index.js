@@ -41,6 +41,11 @@ const App = () => {
     setModalVisible(false)
   }
 
+  const handleOpenModal = () => {
+    setModalVisible(true);
+    setSelectedRow({}); // 设置初始化的表单数据
+  }
+
   // 表单配置
   const formItems = [
     {
@@ -104,6 +109,7 @@ const App = () => {
 
   return (
     <div>
+      <button onClick={handleOpenModal}>增加</button>
       <Table dataSource={dataSource} columns={columns} />
       {selectedRow && (
         <EditableModal

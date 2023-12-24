@@ -17,12 +17,16 @@ const EditableModal = ({
     setFormValues(initialValues);
   }, [initialValues])
 
-  useEffect(() => {
-    console.log(111, initialValues)
-  }, [])
-
   const handleSave = () => {
-    onSave(formValues);
+    // 将时间和日期选择器的值格式化为指定格式
+    // const formattedValues = {
+    //   ...formValues,
+    //   time: formValues.time ? dayjs(formValues.time).format('HH:mm:ss') : null,
+    //   date: formValues.date ? dayjs(formValues.date).format('YYYY-MM-DD') : null
+    // }
+    // onSave(formattedValues)
+
+    onSave(formValues)
   };
 
   const handleFieldChange = (field, value) => {
@@ -83,9 +87,9 @@ const EditableModal = ({
                       <TimePicker
                         style={{ width: '200px' }}
                         name={field.name}
-                        value={dayjs(formValues[field.name], 'HH:mm:ss')}
+                        value={formValues[field.name] ? dayjs(formValues[field.name], 'HH:mm:ss') : null}
                         disabled={field.disabled}
-                        onChange={date => handleFieldChange(field.name, date)}
+                        onChange={date => handleFieldChange(field.name, date ? date.format('HH:mm:ss') : null)}
                       />
                     )}
                     {field.type === 'datePicker' && (
@@ -93,9 +97,9 @@ const EditableModal = ({
                         style={{ width: '200px' }}
                         format="YYYY-MM-DD"
                         name={field.name}
-                        value={dayjs(formValues[field.name], 'YYYY-MM-DD')}
+                        value={formValues[field.name] ? dayjs(formValues[field.name], 'YYYY-MM-DD') : null}
                         disabled={field.disabled}
-                        onChange={date => handleFieldChange(field.name, date)}
+                        onChange={date => handleFieldChange(field.name, date ? date.format('YYYY-MM-DD') : null)}
                       />
                     )}
                     {/* 可以根据需要添加其他类型的表单项 */}
