@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { Modal, Input, Select, DatePicker, Tabs } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Modal, Input, Select, TimePicker, DatePicker, Tabs } from 'antd'
+import dayjs from 'dayjs'
 import styles from './EditableModal.scss'
 
 const { TabPane } = Tabs;
@@ -11,7 +12,14 @@ const EditableModal = ({
   formItems,
   initialValues,
 }) => {
-  const [formValues, setFormValues] = useState(initialValues);
+  const [formValues, setFormValues] = useState(initialValues)
+  useEffect(() => {
+    setFormValues(initialValues);
+  }, [initialValues])
+
+  useEffect(() => {
+    console.log(111, initialValues)
+  }, [])
 
   const handleSave = () => {
     onSave(formValues);
@@ -25,7 +33,7 @@ const EditableModal = ({
   };
 
   return (
-    <Modal open={visible} onCancel={onCancel} onOk={handleSave} width={800}>
+    <Modal closable={false} open={visible} onCancel={onCancel} onOk={handleSave} width={640}>
       <Tabs defaultActiveKey="1">
         {formItems.map((tab, tabIndex) => (
           <TabPane tab={tab.title} key={tabIndex + 1}>
@@ -34,12 +42,13 @@ const EditableModal = ({
                 {tab.fields.map((field, fieldIndex) => (
                   <div 
                     key={`formItem-${tabIndex}-${fieldIndex}`}
-                    style={{margin: '0 20px 20px 0'}}
+                    style={{margin: '0 0px 20px 0',display: 'flex', alignItems: 'center'}}
                   >
-                    <label htmlFor={field.name}>{field.label + '：'}</label>
+                    <div style={{ width: '90px', textAlign: 'right' }}>{field.label + '：'}</div>
+                    {/* <label htmlFor={field.name} style={{ width: '50px' }}>{field.label + '：'}</label> */}
                     {field.type === 'input1' && (
                       <Input
-                        style={{ width: '400px' }}
+                        style={{ width: '490px' }}
                         name={field.name}
                         value={formValues[field.name]}
                         disabled={field.disabled}
@@ -70,10 +79,21 @@ const EditableModal = ({
                         ))}
                       </Select>
                     )}
+                    {field.type === 'timePicker' && (
+                      <TimePicker
+                        style={{ width: '200px' }}
+                        name={field.name}
+                        value={dayjs(formValues[field.name], 'HH:mm:ss')}
+                        disabled={field.disabled}
+                        onChange={date => handleFieldChange(field.name, date)}
+                      />
+                    )}
                     {field.type === 'datePicker' && (
                       <DatePicker
+                        style={{ width: '200px' }}
+                        format="YYYY-MM-DD"
                         name={field.name}
-                        value={formValues[field.name]}
+                        value={dayjs(formValues[field.name], 'YYYY-MM-DD')}
                         disabled={field.disabled}
                         onChange={date => handleFieldChange(field.name, date)}
                       />
