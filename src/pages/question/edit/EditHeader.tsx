@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, useState } from 'react'
 import styles from './EditHeader.module.scss'
-import { Button, Typography, Space, Input } from 'antd'
+import { Button, Typography, Space, Input, message } from 'antd'
 import { LeftOutlined, LoadingOutlined, EditOutlined } from '@ant-design/icons'
 import { useNavigate, useParams } from 'react-router-dom'
 import useGetPageInfo from '../../../hooks/useGetPageInfo'
@@ -81,6 +81,38 @@ const SaveButton: FC = () => {
   )
 }
 
+// 发布按钮
+// 删除，假删除 isDeleted = true (更新)
+// 发布，isPublished = true 
+const PublishButton: FC = () => {
+  const navigate = useNavigate()
+  const { id } = useParams()
+  const { componentList = [] } = useGetComponentInfo()
+  const pageInfo = useGetPageInfo()
+
+  const { loading, run: pub } = useRequest(
+    async () => {
+      if (!id) return
+      await updateQuestionListService(id, { 
+        ...pageInfo,
+        componentList,
+        isPublished: true, // 标志着问卷已经被发布
+      })
+    },
+    { 
+      manual: true,
+      onSuccess() {
+        message.success('发布成功')
+        navigate('/question/stat/' + id) // 发布成功，跳转到统计页面
+      }
+    }
+  )
+
+  return (
+    <Button type='primary' onClick={pub} disabled={loading}>发布</Button>
+  )
+}
+
 const EditHeader:FC = () => {
   const navigate = useNavigate()
 
@@ -98,7 +130,7 @@ const EditHeader:FC = () => {
       <div className={styles.right}>
         <Space>
           <SaveButton />
-          <Button type='primary'>发布</Button>
+          <PublishButton />
         </Space>
       </div>
     </div>
