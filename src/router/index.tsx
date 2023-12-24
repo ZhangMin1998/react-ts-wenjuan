@@ -13,6 +13,7 @@ const Trash = lazy(() => import('../pages/manage/Trash'))
 const Star = lazy(() => import('../pages/manage/Star'))
 const Edit = lazy(() => import('../pages/question/edit'))
 const Stat = lazy(() => import('../pages/question/stat'))
+const Fund = lazy(() => import('../pages/Fund/index.js'))
 
 const ClassDemo = lazy(() => import('../components/ErrorDemo/ClassDemo'))
 const FunctionDemo = lazy(() => import('../components/ErrorDemo/FunctionalDemo'))
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />
+      },
+      {
+        path: '/fund',
+        element: <Fund />
       },
       {
         path: 'login',

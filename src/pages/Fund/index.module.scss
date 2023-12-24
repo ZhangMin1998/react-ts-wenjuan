@@ -1,0 +1,9 @@
+.container{
+  height: calc(100vh - 64px - 71px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  // background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+}
