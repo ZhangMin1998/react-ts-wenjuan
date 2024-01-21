@@ -18,7 +18,7 @@ const Fund = lazy(() => import('../pages/Fund/index.js'))
 const ClassDemo = lazy(() => import('../components/ErrorDemo/ClassDemo'))
 const FunctionDemo = lazy(() => import('../components/ErrorDemo/FunctionalDemo'))
 
-const Table = lazy(() => import('../pages/Table/index'))
+const Table = lazy(() => import('../pages/Table/index2'))
 
 const router = createBrowserRouter([
   {
